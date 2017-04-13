@@ -1,0 +1,17 @@
+html
+  head
+    title
+      | PassportJS auth
+    link
+    link(href="stylesheet" rel="/css/index.css")
+  body
+    div.page
+      div.inner
+        h1.description
+          | hello world
+        div.login
+          a.login__button(href="/auth/facebook")
+            | Facebook Log in
+          a.login__button(href="/auth/twitter")
+            | Twitter Log in
+    script(src="/js/index.js" defer)

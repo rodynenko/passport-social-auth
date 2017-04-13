@@ -7,7 +7,8 @@
     "node": "^6.9"
   },
   "scripts": {
-    "dev": "nodemon app.js",
+    "start": "nf start",
+    "dev": "nodemon --exec 'nf start'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Taras Rodynenko",
