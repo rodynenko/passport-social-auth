@@ -3,14 +3,17 @@ const app = express();
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
+const expressStylus = require('express-stylus-middleware');
 const routes = require('./routes');
 
 const { FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } = process.env;
 
+const isFacebookActive = FACEBOOK_APP_ID && FACEBOOK_APP_SECRET;
+const isTwitterActive = TWITTER_CONSUMER_KEY && TWITTER_CONSUMER_SECRET;
 /*
  * Init Facebook Strategy
  */
-if (FACEBOOK_APP_ID && FACEBOOK_APP_SECRET) {
+if (isFacebookActive) {
   passport.use(new FacebookStrategy({
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
@@ -18,7 +21,7 @@ if (FACEBOOK_APP_ID && FACEBOOK_APP_SECRET) {
       profileFields: ['id', 'displayName', 'photos', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
-      console.log("logged by Facebook", profile)
+
       cb()
     }
   ));
@@ -27,7 +30,7 @@ if (FACEBOOK_APP_ID && FACEBOOK_APP_SECRET) {
 /*
  * Init Twitter Strategy
  */
-if (TWITTER_CONSUMER_KEY && TWITTER_CONSUMER_SECRET) {
+if (isTwitterActive) {
   passport.use(new TwitterStrategy({
       consumerKey: TWITTER_CONSUMER_KEY,
       consumerSecret: TWITTER_CONSUMER_SECRET,
@@ -44,10 +47,10 @@ app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
 
 app.set('port', process.env.port || 3000);
-app.use(express.static('src/public'));
+app.use('/css', expressStylus(__dirname + '/public/stylus-css/'));
+app.use(express.static('public'));
 app.set('views', "./views");
 app.set('view engine', 'pug');
-
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 
 app.use(passport.initialize());
