@@ -18,11 +18,10 @@ if (isFacebookActive) {
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
       callbackURL: "http://localhost:3000/auth/facebook/callback",
-      profileFields: ['id', 'displayName', 'photos', 'email']
+      profileFields: ['id', 'displayName', 'photos', 'emails']
     },
     (accessToken, refreshToken, profile, cb) => {
-
-      cb()
+      return cb(null, profile);
     }
   ));
 }
@@ -34,14 +33,22 @@ if (isTwitterActive) {
   passport.use(new TwitterStrategy({
       consumerKey: TWITTER_CONSUMER_KEY,
       consumerSecret: TWITTER_CONSUMER_SECRET,
+      userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
       callbackURL: "http://localhost:3000/auth/twitter/callback"
     },
     function(token, tokenSecret, profile, cb) {
-      console.log("logged by Twitter", profile)
-      cb()
+      return cb(null, profile);
     }
   ));
 }
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
 
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
