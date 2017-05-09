@@ -1,17 +1,12 @@
 html
   head
-    title
-      | PassportJS auth
-    link
-    link(href="stylesheet" rel="/css/index.css")
+    title PassportJS auth
+    link(rel="stylesheet" type="text/css" href="/css/style.css")
   body
-    div.page
-      div.inner
-        h1.description
-          | hello world
-        div.login
-          a.login__button(href="/auth/facebook")
-            | Facebook Log in
-          a.login__button(href="/auth/twitter")
-            | Twitter Log in
-    script(src="/js/index.js" defer)
+    .page
+      .inner
+        h3.inner__description Try Passport Social Login
+        .inner__text This site is a place for testing passport login by social OAUTH
+        .login
+          a.login__button.login_facebook(href="/auth/facebook") Facebook Log in
+          a.login__button.login_twitter(href="/auth/twitter") Twitter Log in
